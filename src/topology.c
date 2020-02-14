@@ -1055,6 +1055,11 @@ HSAKMT_STATUS topology_sysfs_get_node_props(uint32_t node_id,
 			goto err;
 		}
 
+		envvar = getenv("HSA_OVERRIDE_GFX_NOCPU");
+		if (envvar && atoi(envvar) != 0) {
+			props->NumCPUCores = 0;
+		}
+
 		/* Retrieve the CAL name of the node */
 		strncpy((char *)props->AMDName, hsa_gfxip->amd_name, sizeof(props->AMDName)-1);
 		if (!props->NumCPUCores) {
